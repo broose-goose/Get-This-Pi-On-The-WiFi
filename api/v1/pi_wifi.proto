@@ -1,0 +1,56 @@
+
+syntax = "proto3";
+
+package GetThisPiOnTheWiFi.v1.pi_wifi;
+
+option go_package = "github.com/broose-goose/Get-This-Pi-On-The-WiFi/api/v1/go/pi_wifi;protoPiWiFi";
+
+
+
+
+message EmptyRequest {}
+
+message SetWiFiDetails {
+  string ssid = 1;
+  string password = 2;
+}
+
+message PiWiFiRequest {
+  uint32 request_id = 1;
+  oneof request {
+      EmptyRequest getDeviceDescription = 2;
+      SetWiFiDetails setWiFiDetails = 3;
+  }
+}
+
+
+
+message EmptyResponse {}
+
+message SuccessFailure {
+  bool success = 1;
+  string error = 2;
+}
+
+enum WiFiStatus {
+  DISCONNECTING = 0;
+  SETTING = 1;
+  RESTARTING = 2;
+  CONNECTING = 3;
+  CONNECTED = 4;
+}
+
+message DeviceDescription {
+  string deviceName = 1;
+  string deviceWiFiName = 2;
+  WiFiStatus wiFiStatus = 3;
+}
+
+message PiWiFiResponse {
+  uint32 response_id = 1;
+  SuccessFailure status = 2;
+  oneof response {
+    DeviceDescription deviceDescription = 3;
+    EmptyResponse setWiFiDetailsResponse = 4;
+  }
+}
